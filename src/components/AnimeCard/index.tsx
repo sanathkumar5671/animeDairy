@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { useAuth } from "@/lib/hooks/useAuth";
 import type { AnimeData } from "@/lib/types/anime";
 import {
   addToWatchlist,
@@ -26,13 +27,14 @@ export const AnimeCard = ({
   showActions = true,
   className = "",
 }: AnimeCardProps) => {
+  const { user } = useAuth();
   const [isInUserWatchlist, setIsInUserWatchlist] = useState(false);
   const [isInUserWatched, setIsInUserWatched] = useState(false);
   const [isInUserFavorites, setIsInUserFavorites] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleCheckStatus = useCallback(async () => {
-    if (!showActions) return;
+    if (!showActions || !user) return;
 
     try {
       const [watchlistStatus, watchedStatus, favoritesStatus] =
@@ -48,9 +50,10 @@ export const AnimeCard = ({
     } catch (error) {
       console.error("Error checking anime status:", error);
     }
-  }, [anime.id, showActions]);
+  }, [anime.id, showActions, user]);
 
   const handleWatchlistToggle = async () => {
+    if (!user) return;
     setLoading(true);
     try {
       if (isInUserWatchlist) {
@@ -68,6 +71,7 @@ export const AnimeCard = ({
   };
 
   const handleWatchedToggle = async () => {
+    if (!user) return;
     setLoading(true);
     try {
       if (isInUserWatched) {
@@ -85,6 +89,7 @@ export const AnimeCard = ({
   };
 
   const handleFavoritesToggle = async () => {
+    if (!user) return;
     setLoading(true);
     try {
       if (isInUserFavorites) {
@@ -157,8 +162,8 @@ export const AnimeCard = ({
           <span className="capitalize">{anime.status}</span>
         </div>
 
-        {/* Action Buttons */}
-        {showActions && (
+        {/* Action Buttons - Only show if user is logged in */}
+        {showActions && user && (
           <div className="flex gap-2">
             <button
               onClick={handleWatchlistToggle}
@@ -199,6 +204,21 @@ export const AnimeCard = ({
             >
               {loading ? "..." : isInUserFavorites ? "❤️" : "🤍"}
             </button>
+          </div>
+        )}
+
+        {/* Login Prompt - Show if user is not logged in */}
+        {showActions && !user && (
+          <div className="text-center py-3">
+            <p className="text-gray-400 text-sm mb-2">
+              Sign in to manage your anime lists
+            </p>
+            <a
+              href="/login"
+              className="inline-block px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
+            >
+              Sign In
+            </a>
           </div>
         )}
       </div>
