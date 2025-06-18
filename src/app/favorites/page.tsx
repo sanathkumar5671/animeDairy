@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useAuth } from "@/lib/hooks/useAuth";
 import { Navigation } from "@/components/Navigation";
 import { BackgroundElements } from "@/components/BackgroundElements";
@@ -70,7 +71,7 @@ export default function FavoritesPage() {
             ) : favorites.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-gray-400 text-lg mb-4">
-                  You don't have any favorites yet
+                  You don&apos;t have any favorites yet
                 </div>
                 <p className="text-gray-500">
                   Start adding anime to your favorites from the trending page!
@@ -85,10 +86,11 @@ export default function FavoritesPage() {
                   >
                     {/* Anime Cover Image */}
                     <div className="relative aspect-[3/4] overflow-hidden">
-                      <img
+                      <Image
                         src={item.anime_cover_image || "/placeholder-anime.jpg"}
                         alt={item.anime_title}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-110"
                       />
 
                       {/* Heart Overlay */}

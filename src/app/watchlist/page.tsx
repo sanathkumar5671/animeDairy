@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useAuth } from "@/lib/hooks/useAuth";
 import { Navigation } from "@/components/Navigation";
 import { BackgroundElements } from "@/components/BackgroundElements";
@@ -85,10 +86,11 @@ export default function WatchlistPage() {
                   >
                     {/* Anime Cover Image */}
                     <div className="relative aspect-[3/4] overflow-hidden">
-                      <img
+                      <Image
                         src={item.anime_cover_image || "/placeholder-anime.jpg"}
                         alt={item.anime_title}
-                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                        fill
+                        className="object-cover transition-transform duration-300 hover:scale-110"
                       />
                     </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import type { AnimeData } from "@/lib/types/anime";
 import {
   addToWatchlist,
@@ -30,7 +31,7 @@ export const AnimeCard = ({
   const [isInUserFavorites, setIsInUserFavorites] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleCheckStatus = async () => {
+  const handleCheckStatus = useCallback(async () => {
     if (!showActions) return;
 
     try {
@@ -47,7 +48,7 @@ export const AnimeCard = ({
     } catch (error) {
       console.error("Error checking anime status:", error);
     }
-  };
+  }, [anime.id, showActions]);
 
   const handleWatchlistToggle = async () => {
     setLoading(true);
@@ -103,7 +104,7 @@ export const AnimeCard = ({
   // Check status on mount
   useEffect(() => {
     handleCheckStatus();
-  }, [anime.id, showActions]);
+  }, [handleCheckStatus]);
 
   return (
     <div
@@ -111,10 +112,11 @@ export const AnimeCard = ({
     >
       {/* Anime Cover Image */}
       <div className="relative aspect-[3/4] overflow-hidden">
-        <img
+        <Image
           src={anime.coverImage.large}
           alt={anime.title.english || anime.title.romaji}
-          className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+          fill
+          className="object-cover transition-transform duration-300 hover:scale-110"
         />
 
         {/* Overlay with Score */}
