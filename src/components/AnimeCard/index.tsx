@@ -206,21 +206,6 @@ export const AnimeCard = ({
             </button>
           </div>
         )}
-
-        {/* Login Prompt - Show if user is not logged in */}
-        {showActions && !user && (
-          <div className="text-center py-3">
-            <p className="text-gray-400 text-sm mb-2">
-              Sign in to manage your anime lists
-            </p>
-            <a
-              href="/login"
-              className="inline-block px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
-            >
-              Sign In
-            </a>
-          </div>
-        )}
       </div>
     </div>
   );
