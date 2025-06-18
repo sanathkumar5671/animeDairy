@@ -52,7 +52,38 @@ export const AnimeCard = ({
     }
   }, [anime.id, showActions, user]);
 
-  const handleWatchlistToggle = async () => {
+  const handleCardClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Only navigate if not clicking on action buttons or sign-in link
+    const target = e.target as HTMLElement;
+    if (target.closest("button") || target.closest("a")) {
+      console.log("Click intercepted by button or link, not navigating");
+      return;
+    }
+
+    console.log("Card clicked, navigating to:", `/show?id=${anime.id}`);
+    console.log("Current URL:", window.location.href);
+
+    // Use window.location.href for navigation
+    window.location.href = `/show?id=${anime.id}`;
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      e.stopPropagation();
+
+      console.log("Card key pressed, navigating to:", `/show?id=${anime.id}`);
+      window.location.href = `/show?id=${anime.id}`;
+    }
+  };
+
+  const handleWatchlistToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Watchlist button clicked, preventing navigation");
     if (!user) return;
     setLoading(true);
     try {
@@ -70,7 +101,10 @@ export const AnimeCard = ({
     }
   };
 
-  const handleWatchedToggle = async () => {
+  const handleWatchedToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Watched button clicked, preventing navigation");
     if (!user) return;
     setLoading(true);
     try {
@@ -88,7 +122,10 @@ export const AnimeCard = ({
     }
   };
 
-  const handleFavoritesToggle = async () => {
+  const handleFavoritesToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Favorites button clicked, preventing navigation");
     if (!user) return;
     setLoading(true);
     try {
@@ -108,12 +145,21 @@ export const AnimeCard = ({
 
   // Check status on mount
   useEffect(() => {
-    handleCheckStatus();
-  }, [handleCheckStatus]);
+    if (showActions && user) {
+      handleCheckStatus();
+    }
+  }, [handleCheckStatus, showActions, user]);
 
   return (
     <div
-      className={`bg-gray-800/50 backdrop-blur-lg rounded-lg shadow-xl border border-gray-700/50 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] ${className}`}
+      className={`block bg-gray-800/50 backdrop-blur-lg rounded-lg shadow-xl border border-gray-700/50 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] cursor-pointer ${className}`}
+      onClick={handleCardClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-label={`View details for ${
+        anime.title.english || anime.title.romaji
+      }`}
     >
       {/* Anime Cover Image */}
       <div className="relative aspect-[3/4] overflow-hidden">
