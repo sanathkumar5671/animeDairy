@@ -1,11 +1,19 @@
-'use client'
+"use client";
 
 import { useAuth } from "@/lib/hooks/useAuth";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
   const { user, loading, signOut } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [user, loading, router]);
 
   if (loading) {
     return (
@@ -16,54 +24,32 @@ export default function Home() {
   }
 
   if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-md w-full space-y-8 text-center">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Welcome to Anime Diary
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-8">
-              Track your favorite anime series and manage your watchlist
-            </p>
-          </div>
-          <div className="space-y-4">
-            <Link
-              href="/login"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/signup"
-              className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700"
-            >
-              Sign Up
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-red-500 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
+      </div>
+
       {/* Navigation Bar */}
-      <nav className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+      <nav className="bg-white/10 backdrop-blur-lg shadow-sm border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Anime Diary
-              </h1>
+              <h1 className="text-xl font-semibold text-white">Anime Diary</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+              <span className="text-sm text-white/80">
                 Welcome, {user.email}
               </span>
               <button
                 onClick={signOut}
-                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="inline-flex items-center px-3 py-2 border border-white/20 text-sm leading-4 font-medium rounded-lg text-white bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-200"
               >
                 Sign Out
               </button>
@@ -73,9 +59,9 @@ export default function Home() {
       </nav>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 relative z-10">
         <div className="px-4 py-6 sm:px-0">
-          <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-[calc(100vh-200px)] p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+          <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-[calc(100vh-200px)] p-8 pb-20 gap-16 sm:p-20">
             <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
               <Image
                 className="dark:invert"
@@ -85,34 +71,36 @@ export default function Home() {
                 height={38}
                 priority
               />
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 max-w-2xl w-full">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              <div className="bg-white/10 backdrop-blur-lg rounded-lg shadow-xl p-6 max-w-2xl w-full border border-white/20">
+                <h2 className="text-2xl font-bold text-white mb-4">
                   Your Anime Dashboard
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  Welcome to your personal anime tracking dashboard! You are now successfully authenticated and can start managing your anime collection.
+                <p className="text-white/80 mb-6">
+                  Welcome to your personal anime tracking dashboard! You are now
+                  successfully authenticated and can start managing your anime
+                  collection.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">Watchlist</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">0 anime</p>
+                  <div className="bg-white/10 backdrop-blur-lg p-4 rounded-lg border border-white/20">
+                    <h3 className="font-semibold text-white">Watchlist</h3>
+                    <p className="text-sm text-white/80">0 anime</p>
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">Completed</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">0 anime</p>
+                  <div className="bg-white/10 backdrop-blur-lg p-4 rounded-lg border border-white/20">
+                    <h3 className="font-semibold text-white">Completed</h3>
+                    <p className="text-sm text-white/80">0 anime</p>
                   </div>
-                  <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">Favorites</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">0 anime</p>
+                  <div className="bg-white/10 backdrop-blur-lg p-4 rounded-lg border border-white/20">
+                    <h3 className="font-semibold text-white">Favorites</h3>
+                    <p className="text-sm text-white/80">0 anime</p>
                   </div>
                 </div>
               </div>
 
               <div className="flex gap-4 items-center flex-col sm:flex-row">
-                <button className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto">
+                <button className="rounded-lg border border-white/20 transition-colors flex items-center justify-center bg-white/20 hover:bg-white/30 text-white font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto focus:outline-none focus:ring-2 focus:ring-white/50">
                   Add Anime
                 </button>
-                <button className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]">
+                <button className="rounded-lg border border-white/20 transition-colors flex items-center justify-center bg-white/10 hover:bg-white/20 text-white font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px] focus:outline-none focus:ring-2 focus:ring-white/50">
                   Browse Anime
                 </button>
               </div>
