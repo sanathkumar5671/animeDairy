@@ -1,6 +1,13 @@
 export const TRENDING_ANIME_QUERY = `
   query GetTrendingAnime($page: Int, $perPage: Int) {
     Page(page: $page, perPage: $perPage) {
+      pageInfo {
+        total
+        currentPage
+        lastPage
+        hasNextPage
+        perPage
+      }
       media(sort: TRENDING_DESC, type: ANIME) {
         id
         title {
