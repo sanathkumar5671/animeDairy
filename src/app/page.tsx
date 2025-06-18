@@ -1,9 +1,10 @@
 "use client";
 
 import { useAuth } from "@/lib/hooks/useAuth";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Link from "next/link";
+import { TrendingAnime } from "@/components/TrendingAnime";
 
 export default function Home() {
   const { user, loading, signOut } = useAuth();
@@ -44,6 +45,12 @@ export default function Home() {
               <h1 className="text-xl font-semibold text-white">Anime Diary</h1>
             </div>
             <div className="flex items-center space-x-4">
+              <Link
+                href="/trending"
+                className="text-sm text-white/80 hover:text-white transition-colors"
+              >
+                Trending
+              </Link>
               <span className="text-sm text-white/80">
                 Welcome, {user.email}
               </span>
@@ -61,50 +68,40 @@ export default function Home() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 relative z-10">
         <div className="px-4 py-6 sm:px-0">
-          <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-[calc(100vh-200px)] p-8 pb-20 gap-16 sm:p-20">
-            <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-              <Image
-                className="dark:invert"
-                src="/next.svg"
-                alt="Next.js logo"
-                width={180}
-                height={38}
-                priority
-              />
-              <div className="bg-white/10 backdrop-blur-lg rounded-lg shadow-xl p-6 max-w-2xl w-full border border-white/20">
-                <h2 className="text-2xl font-bold text-white mb-4">
-                  Your Anime Dashboard
-                </h2>
-                <p className="text-white/80 mb-6">
-                  Welcome to your personal anime tracking dashboard! You are now
-                  successfully authenticated and can start managing your anime
-                  collection.
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-white/10 backdrop-blur-lg p-4 rounded-lg border border-white/20">
-                    <h3 className="font-semibold text-white">Watchlist</h3>
-                    <p className="text-sm text-white/80">0 anime</p>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-lg p-4 rounded-lg border border-white/20">
-                    <h3 className="font-semibold text-white">Completed</h3>
-                    <p className="text-sm text-white/80">0 anime</p>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-lg p-4 rounded-lg border border-white/20">
-                    <h3 className="font-semibold text-white">Favorites</h3>
-                    <p className="text-sm text-white/80">0 anime</p>
-                  </div>
+          <div className="grid grid-rows-[auto_1fr] gap-8">
+            {/* Dashboard Stats */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-lg shadow-xl p-6 border border-white/20">
+              <h2 className="text-2xl font-bold text-white mb-4">
+                Your Anime Dashboard
+              </h2>
+              <p className="text-white/80 mb-6">
+                Welcome to your personal anime tracking dashboard! You are now
+                successfully authenticated and can start managing your anime
+                collection.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white/10 backdrop-blur-lg p-4 rounded-lg border border-white/20">
+                  <h3 className="font-semibold text-white">Watchlist</h3>
+                  <p className="text-sm text-white/80">0 anime</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-lg p-4 rounded-lg border border-white/20">
+                  <h3 className="font-semibold text-white">Completed</h3>
+                  <p className="text-sm text-white/80">0 anime</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-lg p-4 rounded-lg border border-white/20">
+                  <h3 className="font-semibold text-white">Favorites</h3>
+                  <p className="text-sm text-white/80">0 anime</p>
                 </div>
               </div>
+            </div>
 
-              <div className="flex gap-4 items-center flex-col sm:flex-row">
-                <button className="rounded-lg border border-white/20 transition-colors flex items-center justify-center bg-white/20 hover:bg-white/30 text-white font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto focus:outline-none focus:ring-2 focus:ring-white/50">
-                  Add Anime
-                </button>
-                <button className="rounded-lg border border-white/20 transition-colors flex items-center justify-center bg-white/10 hover:bg-white/20 text-white font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px] focus:outline-none focus:ring-2 focus:ring-white/50">
-                  Browse Anime
-                </button>
-              </div>
-            </main>
+            {/* Trending Anime Section */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-lg shadow-xl p-6 border border-white/20">
+              <h2 className="text-2xl font-bold text-white mb-6">
+                Trending Now
+              </h2>
+              <TrendingAnime />
+            </div>
           </div>
         </div>
       </div>
